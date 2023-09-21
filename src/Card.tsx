@@ -11,6 +11,9 @@ interface ICard {
 };
 
 
+const QUESTION_MARK_IMG = "https://static.vecteezy.com/system/resources/previews/007/126/739/non_2x/question-mark-icon-free-vector.jpg";
+
+
 const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }: ICard) => {
     const handleClick = () => {
         !isFlipped && !isDisabled && !isInactive && onClick(index);
@@ -26,7 +29,7 @@ const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }: ICard
             onClick={handleClick}
         >
             <div className="card-face card-font-face">
-                <span>?</span>
+                <img src={QUESTION_MARK_IMG} alt={"card"} />
             </div>
             <div className="card-face card-back-face">
                 <img src={card.image} alt={card.type} />

@@ -9,41 +9,10 @@ import {
 } from "@mui/material";
 import Card from "./Card";
 import "./App.scss";
+import type { CardType, EntryCardType } from "./types";
 
 
-type cardObj = {[key: string]: string};
-interface IClearedCards {[key: string]: boolean};
-
-
-const uniqueElementsArray: cardObj[] = [
-    {
-        type: "Bear",
-        image: `https://cloud.modyocdn.com/uploads/f0753a4f-87b2-484d-aeb1-a22c3278cb50/original/bear.jpg`
-    },
-    {
-        type: "Bird",
-        image: `https://cloud.modyocdn.com/uploads/651e2381-dc33-43fc-8762-58079ffb36d1/original/bird.jpg`
-    },
-    {
-        type: "Cat",
-        image: `https://cloud.modyocdn.com/uploads/bf9df521-88bb-44f5-8853-d7f9a5f4aa60/original/cat.jpg`
-    },
-    {
-        type: "Deer",
-        image: `https://cloud.modyocdn.com/uploads/1072dca9-1c9b-4a76-abfb-1d70d7dd861b/original/deer.jpg`
-    },
-    {
-        type: "Dog",
-        image: `https://cloud.modyocdn.com/uploads/c10dc024-71f4-4a60-a3b7-2c53ffe2522d/original/dog.jpg`
-    },
-    {
-        type: "Dolphin",
-        image: `https://cloud.modyocdn.com/uploads/db3322be-03ac-41af-be11-7944fcef7fa0/original/dolphin.jpg`
-    }
-];
-
-
-function shuffleCards(array: cardObj[]): cardObj[] {
+function shuffleCards(array: CardType[]): CardType[] {
     const len = array.length;
 
     for (let i = len; i > 0; i--) {
@@ -59,11 +28,10 @@ function shuffleCards(array: cardObj[]): cardObj[] {
 
 
 export default function App() {
-    const [cards, setCards] = useState<cardObj[]>(
-        shuffleCards.bind(null, uniqueElementsArray.concat(uniqueElementsArray))
-    );
+    const [originalCards, setOriginalCards] = useState<CardType[]>([]);
+    const [cards, setCards] = useState<CardType[]>([]);
     const [openCards, setOpenCards] = useState<number[]>([]);
-    const [clearedCards, setClearedCards] = useState<IClearedCards>({});
+    const [clearedCards, setClearedCards] = useState<{[key: string]: boolean}>({});
     const [shouldDisableAllCards, setShouldDisableAllCards] = useState<boolean>(false);
     const [moves, setMoves] = useState<number>(0);
     const [hits, setHits] = useState<number>(0);
@@ -80,7 +48,7 @@ export default function App() {
 
 
     const checkCompletion = () => {
-        if (Object.keys(clearedCards).length === uniqueElementsArray.length) {
+        if (originalCards.length > 0 && Object.keys(clearedCards).length === originalCards.length) {
             setShowModal(true);
             const highScore = Math.min(moves, bestScore);
             setBestScore(highScore);
@@ -122,6 +90,22 @@ export default function App() {
 
 
     useEffect(() => {
+        const URL = "https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=20";
+
+        fetch(URL)
+            .then(response => response.json())
+            .then(data => {
+                const entryCards = data.entries.map(({ fields, meta }: EntryCardType) => ({
+                    type: meta.slug,
+                    image: fields.image.url,
+                }));
+                setOriginalCards(entryCards);
+                setCards(shuffleCards(entryCards.concat(entryCards)));
+            });
+    }, []);
+
+
+    useEffect(() => {
         let timeoutID: null | ReturnType<typeof setTimeout> = null;
 
         if (openCards.length === 2) {
@@ -142,7 +126,7 @@ export default function App() {
     };
 
 
-    const checkIsInactive = (card: cardObj): boolean => {
+    const checkIsInactive = (card: CardType): boolean => {
         return Boolean(clearedCards[card.type]);
     };
 
@@ -156,7 +140,7 @@ export default function App() {
         setMisses(0);
         setShouldDisableAllCards(false);
         // set a shuffled deck of cards
-        setCards(shuffleCards(uniqueElementsArray.concat(uniqueElementsArray)));
+        setCards(shuffleCards(originalCards.concat(originalCards)));
     };
 
     return (

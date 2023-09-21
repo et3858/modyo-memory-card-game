@@ -66,6 +66,8 @@ export default function App() {
     const [clearedCards, setClearedCards] = useState<IClearedCards>({});
     const [shouldDisableAllCards, setShouldDisableAllCards] = useState<boolean>(false);
     const [moves, setMoves] = useState<number>(0);
+    const [hits, setHits] = useState<number>(0);
+    const [misses, setMisses] = useState<number>(0);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [bestScore, setBestScore] = useState<number>(
         JSON.parse(localStorage.getItem("bestScore") as string) || Number.POSITIVE_INFINITY
@@ -94,8 +96,11 @@ export default function App() {
         if (cards[first].type === cards[second].type) {
             setClearedCards((prev) => ({ ...prev, [cards[first].type]: true }));
             setOpenCards([]);
+            setHits(hits => hits + 1);
             return;
         }
+
+        setMisses(miss => miss + 1);
 
         // This is to flip the cards back after 500ms duration
         timeout.current = setTimeout(() => {
@@ -107,7 +112,7 @@ export default function App() {
     const handleCardClick = (index: number) => {
         if (openCards.length === 1) {
             setOpenCards((prev) => [...prev, index]);
-            setMoves((moves) => moves + 1);
+            setMoves(moves => moves + 1);
             disable();
         } else {
             clearTimeout(Number(timeout.current));
@@ -147,6 +152,8 @@ export default function App() {
         setOpenCards([]);
         setShowModal(false);
         setMoves(0);
+        setHits(0);
+        setMisses(0);
         setShouldDisableAllCards(false);
         // set a shuffled deck of cards
         setCards(shuffleCards(uniqueElementsArray.concat(uniqueElementsArray)));
@@ -180,6 +187,15 @@ export default function App() {
                     <div className="moves">
                         <span className="bold">Moves:</span> {moves}
                     </div>
+
+                    <div className="hits">
+                        <span className="bold">Hits:</span> {hits}
+                    </div>
+
+                    <div className="misses">
+                        <span className="bold">Misses:</span> {misses}
+                    </div>
+
                     {localStorage.getItem("bestScore") && (
                         <div className="high-score">
                             <span className="bold">Best Score:</span> {bestScore}

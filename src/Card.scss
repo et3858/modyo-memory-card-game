@@ -1,23 +1,26 @@
 .card {
-    width: 100%;
-    height: 100%;
     border-radius: 4px;
     box-shadow: 2px 2px 4px 4px #DEDEDE;
-    transition: 0.3s;
-    transform-style: preserve-3d;
-    position: relative;
     cursor: pointer;
-
-    img {
-        width: 95%;
-        height: 95%;
-    }
+    height: 100px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: 0.3s;
+    width: 100px;
 
     .card-face {
+        align-items: center;
         backface-visibility: hidden;
+        display: flex;
+        height: 100%;
+        justify-content: center;
         position: absolute;
         width: 100%;
-        height: 100%;
+
+        img {
+            height: 95%;
+            width: 95%;
+        }
 
         &.card-back-face {
             transform: rotateY(180deg);

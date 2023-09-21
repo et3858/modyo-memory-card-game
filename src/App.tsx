@@ -8,6 +8,7 @@ import {
     Dialog,
 } from "@mui/material";
 import Card from "./components/Card";
+import CongratsModal from "./components/modals/CongratsModal";
 import "./App.scss";
 import type { CardType, EntryCardType } from "./types";
 
@@ -253,31 +254,14 @@ export default function App() {
                 </DialogActions>
             </Dialog>
 
-            <Dialog
-                open={showModal}
-                disableEscapeKeyDown
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Hurray!!! You completed the challenge {playerName}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        You completed the game in {moves} moves. Your best score is{" "}
-                        {bestScore} moves.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleRestart} color="primary">
-                        Restart
-                    </Button>
-
-                    <Button onClick={() => setShowModal(false)} color="primary">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <CongratsModal
+                showModal={showModal}
+                playerName={playerName}
+                moves={moves}
+                bestScore={bestScore}
+                onRestart={handleRestart}
+                onClose={() => setShowModal(false)}
+            />
         </div>
     );
 }

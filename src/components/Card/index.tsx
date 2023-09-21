@@ -1,6 +1,6 @@
 import classnames from "classnames";
-import "./Card.scss";
-import type { CardType } from "./types";
+import "./index.scss";
+import type { CardType } from "../../types";
 
 interface IProps {
     card: CardType,

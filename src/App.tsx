@@ -1,14 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import {
-    Button,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Dialog,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import Card from "./components/Card";
 import CongratsModal from "./components/modals/CongratsModal";
+import PlayerNameModal from "./components/modals/PlayerNameModal";
 import "./App.scss";
 import type { CardType, EntryCardType } from "./types";
 
@@ -45,7 +39,6 @@ export default function App() {
     const [playerName, setPlayerName] = useState<string>(
         localStorage.getItem("playerName") || ""
     );
-    const [inputText, setInputText] = useState<string>("");
 
 
     const timeout = useRef<null | ReturnType<typeof setTimeout>>(null);
@@ -85,9 +78,9 @@ export default function App() {
     };
 
 
-    const handleSavePlayerNameClick = () => {
-        setPlayerName(inputText);
-        localStorage.setItem("playerName", inputText);
+    const handleSavePlayerNameClick = (name: string) => {
+        setPlayerName(name);
+        localStorage.setItem("playerName", name);
         setShowNameModal(false);
     };
 
@@ -218,41 +211,10 @@ export default function App() {
                 </div>
             </footer>
 
-            <Dialog
-                open={showNameModal}
-                disableEscapeKeyDown
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Type your name
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        <p>Please, type your name before playing</p>
-
-                        <br />
-
-                        <div className="rounded-full border-solid border-2 border-gray-200 overflow-hidden">
-                            <input
-                                className="w-full outline-none p-2 bg-transparent"
-                                type="text"
-                                value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
-                            />
-                        </div>
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={handleSavePlayerNameClick}
-                        color="primary"
-                        disabled={!inputText}
-                    >
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <PlayerNameModal
+                showModal={showNameModal}
+                onSave={handleSavePlayerNameClick}
+            />
 
             <CongratsModal
                 showModal={showModal}

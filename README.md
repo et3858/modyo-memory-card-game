@@ -1,27 +1,26 @@
-# React + TypeScript + Vite
+# Modyo challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a project as a part of Modyo's challenge. It consist in a memory game where the player must flip a pair of cards with the same content consequtively to win and have the best score.
+It uses React and TypeScript in Vite.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Steps
 
-## Expanding the ESLint configuration
+### Install modules and dependencies
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```sh
+$ npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Run in dev mode
+
+```sh
+$ npm run dev
+```
+
+### Compile and run in prod mode
+
+```sh
+$ npm run build && npm run preview
+```
+

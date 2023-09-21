@@ -37,9 +37,16 @@ export default function App() {
     const [hits, setHits] = useState<number>(0);
     const [misses, setMisses] = useState<number>(0);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showNameModal, setShowNameModal] = useState<boolean>(false);
     const [bestScore, setBestScore] = useState<number>(
         JSON.parse(localStorage.getItem("bestScore") as string) || Number.POSITIVE_INFINITY
     );
+    const [playerName, setPlayerName] = useState<string>(
+        localStorage.getItem("playerName") || ""
+    );
+    const [inputText, setInputText] = useState<string>("");
+
+
     const timeout = useRef<null | ReturnType<typeof setTimeout>>(null);
 
 
@@ -77,6 +84,13 @@ export default function App() {
     };
 
 
+    const handleSavePlayerNameClick = () => {
+        setPlayerName(inputText);
+        localStorage.setItem("playerName", inputText);
+        setShowNameModal(false);
+    };
+
+
     const handleCardClick = (index: number) => {
         if (openCards.length === 1) {
             setOpenCards((prev) => [...prev, index]);
@@ -103,6 +117,13 @@ export default function App() {
                 setCards(shuffleCards(entryCards.concat(entryCards)));
             });
     }, []);
+
+
+    useEffect(() => {
+        if (!playerName) {
+            setShowNameModal(true);
+        }
+    }, [playerName]);
 
 
     useEffect(() => {
@@ -148,7 +169,7 @@ export default function App() {
             <header>
                 <h3>Play the Flip card game</h3>
                 <div>
-                    Select two cards with same content consequtively to make them vanish
+                    Select two cards with same content consequtively
                 </div>
             </header>
             <div className="container">
@@ -192,6 +213,43 @@ export default function App() {
                     </Button>
                 </div>
             </footer>
+
+            <Dialog
+                open={showNameModal}
+                disableEscapeKeyDown
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Type your name
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        <p>Please, type your name before playing</p>
+
+                        <br />
+
+                        <div className="rounded-full border-solid border-2 border-gray-200 overflow-hidden">
+                            <input
+                                className="w-full outline-none p-2 bg-transparent"
+                                type="text"
+                                value={inputText}
+                                onChange={(e) => setInputText(e.target.value)}
+                            />
+                        </div>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={handleSavePlayerNameClick}
+                        color="primary"
+                        disabled={!inputText}
+                    >
+                        Save
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <Dialog
                 open={showModal}
                 disableEscapeKeyDown
@@ -199,7 +257,7 @@ export default function App() {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    Hurray!!! You completed the challenge
+                    Hurray!!! You completed the challenge {playerName}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -210,6 +268,10 @@ export default function App() {
                 <DialogActions>
                     <Button onClick={handleRestart} color="primary">
                         Restart
+                    </Button>
+
+                    <Button onClick={() => setShowModal(false)} color="primary">
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>

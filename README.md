@@ -18,6 +18,9 @@ $ npm install
 $ npm run dev
 ```
 
+By default, the project will be running at localhost:5173
+Once you enter, the app will ask you to put your name before playing the game
+
 ### Compile and run in prod mode
 
 ```sh

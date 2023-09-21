@@ -30,6 +30,7 @@
 
     &.is-inactive {
         // visibility: hidden;
-        opacity: 0;
+        // opacity: 0;
+        cursor: default;
     }
 }

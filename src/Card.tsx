@@ -13,7 +13,7 @@ interface ICard {
 
 const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }: ICard) => {
     const handleClick = () => {
-        !isFlipped && !isDisabled && onClick(index);
+        !isFlipped && !isDisabled && !isInactive && onClick(index);
     };
 
 
@@ -21,7 +21,7 @@ const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }: ICard
         <div
             className={classnames("card", {
                 "is-flipped": isFlipped,
-                "is-inactive": isInactive
+                "is-flipped is-inactive": isInactive,
             })}
             onClick={handleClick}
         >

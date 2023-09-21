@@ -1,8 +1,9 @@
 import classnames from "classnames";
 import "./Card.scss";
+import type { CardType } from "./types";
 
-interface ICard {
-    card: {[key: string]: string},
+interface IProps {
+    card: CardType,
     index: number,
     isDisabled: boolean,
     isInactive: boolean,
@@ -14,7 +15,7 @@ interface ICard {
 const QUESTION_MARK_IMG = "https://static.vecteezy.com/system/resources/previews/007/126/739/non_2x/question-mark-icon-free-vector.jpg";
 
 
-const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }: ICard) => {
+const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }: IProps) => {
     const handleClick = () => {
         !isFlipped && !isDisabled && !isInactive && onClick(index);
     };

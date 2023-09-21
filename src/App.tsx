@@ -171,23 +171,7 @@ export default function App() {
                 <div>
                     Select two cards with same content consequtively
                 </div>
-            </header>
-            <div className="container">
-                {cards.map((card, index) => {
-                    return (
-                        <Card
-                            key={index}
-                            card={card}
-                            index={index}
-                            isDisabled={shouldDisableAllCards}
-                            isInactive={checkIsInactive(card)}
-                            isFlipped={checkIsFlipped(index)}
-                            onClick={handleCardClick}
-                        />
-                    );
-                })}
-            </div>
-            <footer>
+
                 <div className="score">
                     <div className="moves">
                         <span className="bold">Moves:</span> {moves}
@@ -207,6 +191,25 @@ export default function App() {
                         </div>
                     )}
                 </div>
+            </header>
+
+            <div className="container">
+                {cards.map((card, index) => {
+                    return (
+                        <Card
+                            key={index}
+                            card={card}
+                            index={index}
+                            isDisabled={shouldDisableAllCards}
+                            isInactive={checkIsInactive(card)}
+                            isFlipped={checkIsFlipped(index)}
+                            onClick={handleCardClick}
+                        />
+                    );
+                })}
+            </div>
+
+            <footer>
                 <div className="restart">
                     <Button onClick={handleRestart} color="primary" variant="contained">
                         Restart

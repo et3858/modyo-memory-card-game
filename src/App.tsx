@@ -187,7 +187,7 @@ export default function App() {
                 </div>
             </header>
 
-            <div className="container">
+            <div className="card-container">
                 {cards.map((card, index) => {
                     return (
                         <Card

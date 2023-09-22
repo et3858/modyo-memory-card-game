@@ -45,31 +45,31 @@
         }
     }
 
-    .container {
+    .card-container {
         align-items: center;
         border: 1px solid #DEDEDE;
         box-shadow: 0 0 4px 4px #DEDEDE;
         display: grid;
         gap: 1rem;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 0fr);
+        justify-content: center;
         justify-items: center;
         margin: 0 auto;
-        max-width: 1200px;
         padding: 12px;
         perspective: 100%;
-        width: auto;
+        width: fit-content;
     }
 }
 
 
 @media screen and (min-width: 600px) {
-    .App .container {
-        grid-template-columns: repeat(5, 1fr);
+    .App .card-container {
+        grid-template-columns: repeat(5, 0fr);
     }
 }
 
 @media screen and (min-width: 900px) {
-    .App .container {
-        grid-template-columns: repeat(8, 1fr);
+    .App .card-container {
+        grid-template-columns: repeat(8, 0fr);
     }
 }

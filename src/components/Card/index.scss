@@ -1,6 +1,6 @@
 .card {
-    border-radius: 4px;
-    box-shadow: 2px 2px 4px 4px #DEDEDE;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px 4px #DEDEDE;
     cursor: pointer;
     height: 100px;
     position: relative;
@@ -9,17 +9,16 @@
     width: 100px;
 
     .card-face {
-        align-items: center;
+        border-radius: inherit;
         backface-visibility: hidden;
-        display: flex;
         height: 100%;
-        justify-content: center;
         position: absolute;
         width: 100%;
+        overflow: hidden;
 
         img {
-            height: 95%;
-            width: 95%;
+            height: 100%;
+            width: 100%;
         }
 
         &.card-back-face {
@@ -32,8 +31,6 @@
     }
 
     &.is-inactive {
-        // visibility: hidden;
-        // opacity: 0;
         cursor: default;
     }
 }

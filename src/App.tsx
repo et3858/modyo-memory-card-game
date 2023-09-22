@@ -162,8 +162,13 @@ export default function App() {
         <div className="App">
             <header>
                 <h3>Play the Flip card game</h3>
+
                 <div>
                     Select two cards with same content consequtively
+                </div>
+
+                <div>
+                    <span className="bold">Your name:</span> {playerName}
                 </div>
 
                 <div className="score">

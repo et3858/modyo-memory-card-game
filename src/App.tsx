@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Button } from "@mui/material";
 import Card from "./components/Card";
 import CongratsModal from "./components/modals/CongratsModal";
@@ -28,7 +28,6 @@ export default function App() {
     const [openCards, setOpenCards] = useState<number[]>([]);
     const [clearedCards, setClearedCards] = useState<{[key: string]: boolean}>({});
     const [shouldDisableAllCards, setShouldDisableAllCards] = useState<boolean>(false);
-    const [moves, setMoves] = useState<number>(0);
     const [hits, setHits] = useState<number>(0);
     const [misses, setMisses] = useState<number>(0);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -39,6 +38,7 @@ export default function App() {
     const [playerName, setPlayerName] = useState<string>(
         localStorage.getItem("playerName") || ""
     );
+    const moves = useMemo<number>(() => hits + misses, [hits, misses]);
 
 
     const timeout = useRef<null | ReturnType<typeof setTimeout>>(null);
@@ -88,7 +88,6 @@ export default function App() {
     const handleCardClick = (index: number) => {
         if (openCards.length === 1) {
             setOpenCards((prev) => [...prev, index]);
-            setMoves(moves => moves + 1);
             disable();
         } else {
             clearTimeout(Number(timeout.current));
@@ -150,7 +149,6 @@ export default function App() {
         setClearedCards({});
         setOpenCards([]);
         setShowModal(false);
-        setMoves(0);
         setHits(0);
         setMisses(0);
         setShouldDisableAllCards(false);

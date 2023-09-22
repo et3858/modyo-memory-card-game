@@ -1,9 +1,9 @@
 import classnames from "classnames";
 import "./index.scss";
-import type { CardType } from "../../types";
+import type { TCard } from "../../types";
 
 interface IProps {
-    card: CardType,
+    card: TCard,
     index: number,
     isDisabled: boolean,
     isInactive: boolean,

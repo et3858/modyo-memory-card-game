@@ -4,10 +4,10 @@ import Card from "./components/Card";
 import CongratsModal from "./components/modals/CongratsModal";
 import PlayerNameModal from "./components/modals/PlayerNameModal";
 import "./App.scss";
-import type { CardType, EntryCardType } from "./types";
+import type { TCard, TEntryCard } from "./types";
 
 
-function shuffleCards(array: CardType[]): CardType[] {
+function shuffleCards(array: TCard[]): TCard[] {
     const len = array.length;
 
     for (let i = len; i > 0; i--) {
@@ -23,8 +23,8 @@ function shuffleCards(array: CardType[]): CardType[] {
 
 
 export default function App() {
-    const [originalCards, setOriginalCards] = useState<CardType[]>([]);
-    const [cards, setCards] = useState<CardType[]>([]);
+    const [originalCards, setOriginalCards] = useState<TCard[]>([]);
+    const [cards, setCards] = useState<TCard[]>([]);
     const [openCards, setOpenCards] = useState<number[]>([]);
     const [clearedCards, setClearedCards] = useState<{[key: string]: boolean}>({});
     const [shouldDisableAllCards, setShouldDisableAllCards] = useState<boolean>(false);
@@ -103,7 +103,7 @@ export default function App() {
         fetch(URL)
             .then(response => response.json())
             .then(data => {
-                const entryCards = data.entries.map(({ fields, meta }: EntryCardType) => ({
+                const entryCards = data.entries.map(({ fields, meta }: TEntryCard) => ({
                     type: meta.slug,
                     image: fields.image.url,
                 }));
@@ -141,7 +141,7 @@ export default function App() {
     };
 
 
-    const checkIsInactive = (card: CardType): boolean => {
+    const checkIsInactive = (card: TCard): boolean => {
         return Boolean(clearedCards[card.type]);
     };
 

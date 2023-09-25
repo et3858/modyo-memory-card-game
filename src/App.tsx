@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Button } from "@mui/material";
 import Card from "./components/Card";
+import CardSkeleton from "./components/skeletons/CardSkeleton";
 import CongratsModal from "./components/modals/CongratsModal";
 import PlayerNameModal from "./components/modals/PlayerNameModal";
 import "./App.scss";
 import type { TCard, TEntryCard } from "./types";
+
+
+const CARD_SKELETONS = Array.from(Array(24));
 
 
 function shuffleCards(array: TCard[]): TCard[] {
@@ -23,6 +27,8 @@ function shuffleCards(array: TCard[]): TCard[] {
 
 
 export default function App() {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isFinished, setIsFinished] = useState<boolean>(false);
     const [originalCards, setOriginalCards] = useState<TCard[]>([]);
     const [cards, setCards] = useState<TCard[]>([]);
     const [openCards, setOpenCards] = useState<number[]>([]);
@@ -108,6 +114,9 @@ export default function App() {
                 }));
                 setOriginalCards(entryCards);
                 setCards(shuffleCards(entryCards.concat(entryCards)));
+
+                setIsLoading(false);
+                setIsFinished(true);
             });
     }, []);
 
@@ -190,9 +199,15 @@ export default function App() {
                 </div>
             </header>
 
-            <div className="card-container">
-                {cards.map((card, index) => {
-                    return (
+            {isLoading ?
+                <div className="card-container card-container-skeleton">
+                    {CARD_SKELETONS.map((_card, index) => <CardSkeleton key={index} />)}
+                </div>
+            : null}
+
+            {(isFinished && cards.length > 0) ?
+                <div className="card-container">
+                    {cards.map((card, index) => (
                         <Card
                             key={index}
                             card={card}
@@ -202,9 +217,9 @@ export default function App() {
                             isFlipped={checkIsFlipped(index)}
                             onClick={handleCardClick}
                         />
-                    );
-                })}
-            </div>
+                    ))}
+                </div>
+            : null}
 
             <footer>
                 <div className="restart">

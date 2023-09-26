@@ -210,7 +210,7 @@ export default function App() {
             : null}
 
             {(isFinished && cards.length > 0) ?
-            <>
+                <>
                 <Score moves={moves} hits={hits} misses={misses} bestScore={localStorage.getItem("bestScore")} />
 
                 <div className="card-container">
@@ -234,8 +234,12 @@ export default function App() {
                         </Button>
                     </div>
                 </footer>
-            </>
-            : null}
+                </>
+            :
+                <div className="text-center my-10">
+                    <p>It looks like there are not any cards to play. Try it later</p>
+                </div>
+            }
 
             <PlayerNameModal
                 showModal={showNameModal}

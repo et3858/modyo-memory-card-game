@@ -9,7 +9,7 @@ import "./App.scss";
 import type { TCard, TEntryCard } from "./types";
 
 
-const CARD_SKELETONS = Array.from(Array(24));
+const CARD_SKELETONS = Array.from(Array(40));
 
 
 function shuffleCards(array: TCard[]): TCard[] {
@@ -30,6 +30,7 @@ function shuffleCards(array: TCard[]): TCard[] {
 export default function App() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isFinished, setIsFinished] = useState<boolean>(false);
+    const [isFailed, setIsFailed] = useState<boolean>(false);
     const [originalCards, setOriginalCards] = useState<TCard[]>([]);
     const [cards, setCards] = useState<TCard[]>([]);
     const [openCards, setOpenCards] = useState<number[]>([]);
@@ -103,7 +104,14 @@ export default function App() {
     };
 
 
-    useEffect(() => {
+    const handleTryLoadingClick = () => {
+        setIsFailed(false);
+        setIsLoading(true);
+        loadContent();
+    };
+
+
+    const loadContent = () => {
         const URL = "https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=20";
 
         fetch(URL)
@@ -118,8 +126,15 @@ export default function App() {
 
                 setIsLoading(false);
                 setIsFinished(true);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setIsFailed(true);
             });
-    }, []);
+    };
+
+
+    useEffect(() => loadContent(), []);
 
 
     useEffect(() => {
@@ -183,6 +198,16 @@ export default function App() {
             {isLoading ?
                 <div className="card-container card-container-skeleton">
                     {CARD_SKELETONS.map((_card, index) => <CardSkeleton key={index} />)}
+                </div>
+            : null}
+
+            {isFailed ?
+                <div className="text-center">
+                    <p className="mt-10 mb-2">Something went wrong</p>
+
+                    <Button onClick={handleTryLoadingClick} color="primary" variant="contained">
+                        Try again
+                    </Button>
                 </div>
             : null}
 

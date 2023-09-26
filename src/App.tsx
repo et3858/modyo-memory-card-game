@@ -38,7 +38,7 @@ export default function App() {
     const [shouldDisableAllCards, setShouldDisableAllCards] = useState<boolean>(false);
     const [hits, setHits] = useState<number>(0);
     const [misses, setMisses] = useState<number>(0);
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showCongratsModal, setShowCongratsModal] = useState<boolean>(false);
     const [showNameModal, setShowNameModal] = useState<boolean>(false);
     const [bestScore, setBestScore] = useState<number>(
         JSON.parse(localStorage.getItem("bestScore") as string) || Number.POSITIVE_INFINITY
@@ -58,10 +58,10 @@ export default function App() {
 
     const checkCompletion = () => {
         if (originalCards.length > 0 && Object.keys(clearedCards).length === originalCards.length) {
-            setShowModal(true);
             const highScore = Math.min(moves, bestScore);
             setBestScore(highScore);
             localStorage.setItem("bestScore", highScore.toString());
+            setShowCongratsModal(true);
         }
     };
 
@@ -155,9 +155,7 @@ export default function App() {
     }, [openCards]);
 
 
-    useEffect(() => {
-        checkCompletion();
-    }, [clearedCards]);
+    useEffect(() => checkCompletion(), [clearedCards]);
 
 
     const checkIsFlipped = (index: number): boolean => {
@@ -173,7 +171,7 @@ export default function App() {
     const handleRestart = () => {
         setClearedCards({});
         setOpenCards([]);
-        setShowModal(false);
+        setShowCongratsModal(false);
         setHits(0);
         setMisses(0);
         setShouldDisableAllCards(false);
@@ -184,7 +182,7 @@ export default function App() {
     return (
         <div className="App">
             <header>
-                <h3>Play the Flip card game</h3>
+                <h1>Play the Flip card game</h1>
 
                 <div>
                     Select two cards with same content consequtively
@@ -213,12 +211,7 @@ export default function App() {
 
             {(isFinished && cards.length > 0) ?
             <>
-                <Score
-                    moves={moves}
-                    hits={hits}
-                    misses={misses}
-                    bestScore={localStorage.getItem("bestScore")}
-                />
+                <Score moves={moves} hits={hits} misses={misses} bestScore={localStorage.getItem("bestScore")} />
 
                 <div className="card-container">
                     {cards.map((card, index) => (
@@ -250,12 +243,12 @@ export default function App() {
             />
 
             <CongratsModal
-                showModal={showModal}
+                showModal={showCongratsModal}
                 playerName={playerName}
                 moves={moves}
                 bestScore={bestScore}
                 onRestart={handleRestart}
-                onClose={() => setShowModal(false)}
+                onClose={() => setShowCongratsModal(false)}
             />
         </div>
     );

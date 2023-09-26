@@ -1,10 +1,11 @@
 .score {
+    align-items: flex-end;
     display: flex;
     justify-content: center;
     text-align: center;
     width: 100%;
 
     div {
-        padding: 8px
+        padding: 8px;
     }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Button } from "@mui/material";
 import Card from "./components/Card";
+import Score from "./components/Score";
 import CardSkeleton from "./components/skeletons/CardSkeleton";
 import CongratsModal from "./components/modals/CongratsModal";
 import PlayerNameModal from "./components/modals/PlayerNameModal";
@@ -177,26 +178,6 @@ export default function App() {
                 <div>
                     <span className="bold">Your name:</span> {playerName}
                 </div>
-
-                <div className="score">
-                    <div className="moves">
-                        <span className="bold">Moves:</span> {moves}
-                    </div>
-
-                    <div className="hits">
-                        <span className="bold">Hits:</span> {hits}
-                    </div>
-
-                    <div className="misses">
-                        <span className="bold">Misses:</span> {misses}
-                    </div>
-
-                    {localStorage.getItem("bestScore") && (
-                        <div className="high-score">
-                            <span className="bold">Best Score:</span> {bestScore}
-                        </div>
-                    )}
-                </div>
             </header>
 
             {isLoading ?
@@ -206,6 +187,14 @@ export default function App() {
             : null}
 
             {(isFinished && cards.length > 0) ?
+            <>
+                <Score
+                    moves={moves}
+                    hits={hits}
+                    misses={misses}
+                    bestScore={localStorage.getItem("bestScore")}
+                />
+
                 <div className="card-container">
                     {cards.map((card, index) => (
                         <Card
@@ -219,15 +208,16 @@ export default function App() {
                         />
                     ))}
                 </div>
-            : null}
 
-            <footer>
-                <div className="restart">
-                    <Button onClick={handleRestart} color="primary" variant="contained">
-                        Restart
-                    </Button>
-                </div>
-            </footer>
+                <footer>
+                    <div className="restart">
+                        <Button onClick={handleRestart} color="primary" variant="contained">
+                            Restart
+                        </Button>
+                    </div>
+                </footer>
+            </>
+            : null}
 
             <PlayerNameModal
                 showModal={showNameModal}
